@@ -1,13 +1,13 @@
 package domain;
 
 public class Set {
-    private int repTarget = 12;
+    private RepTarget repTarget;
 
-    public void setRepTarget(int repTarget) {
-        this.repTarget = repTarget;
+    public void setRepTarget(RepTarget repTarget) {
+        this.repTarget = new RepTarget.fixed(12);
     }
 
-    public int getRepTarget() {
+    public RepTarget getRepTarget() {
         return repTarget;
     }
 }

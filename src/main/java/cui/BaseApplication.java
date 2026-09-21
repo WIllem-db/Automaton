@@ -16,7 +16,7 @@ public abstract class BaseApplication {
 
     public abstract void start();
 
-    // String showcase/return methods
+    // String showcase/return methods (Not for returning individual Strings)
 
     public String giveWorkouts() {
         List<String> workouts = dc.giveAllWorkouts();

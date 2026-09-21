@@ -2,6 +2,7 @@ package persistence;
 
 
 import domain.Exercise;
+import domain.RepTarget;
 import domain.Workout;
 
 import java.sql.*;
@@ -17,6 +18,10 @@ public class WorkoutMapper {
             "VALUES((select workoutid from workout where name = ?),?, ?, ?)";
     private static final String DELETE_WORKOUT = "DELETE FROM workout WHERE name = ?";
     private static final String GIVE_ALL_WORKOUTS = "SELECT name FROM workout";
+    private static final String INSERT_REP_TARGET = "INSERT INTO exerciseSet(exerciseID, repTarget) " +
+            "VALUES((SELECT exerciseId FROM exercise WHERE name = ?), ?)";
+    private static final String GIVE_ALL_EXERCISES_FROM_WORKOUT = "SELECT name FROM exercise WHERE exerciseId = (SELECT exerciseId FROM workout WHERE name = ?)";
+
 
     public void addWorkout(Workout workout) {
         try (Connection connection = DriverManager.getConnection(persistence.Connection.JDBC_URL); PreparedStatement query = connection.prepareStatement(INSERT_WORKOUT)) {
@@ -41,13 +46,39 @@ public class WorkoutMapper {
         }
     }
 
-    public void addExercisesToWorkout(List<Exercise> exercises, Workout currentWorkout) {
-        try (Connection connection = DriverManager.getConnection(persistence.Connection.JDBC_URL); PreparedStatement query = connection.prepareStatement(INSERT_EXERCISE)) {
+    public void addExerciseToWorkout(String name, int numberOfSets, String notes, Workout workout) {
+        try {
+            PreparedStatement query = getQuery(INSERT_EXERCISE);
+            query.setString(1, workout.getName());
+            query.setString(2, name);
+            query.setInt(3, numberOfSets);
+            query.setString(4, notes);
+            query.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+//    public void addExercisesToWorkout(List<Exercise> exercises, Workout currentWorkout) {
+//        try (Connection connection = DriverManager.getConnection(persistence.Connection.JDBC_URL); PreparedStatement query = connection.prepareStatement(INSERT_EXERCISE)) {
+//            for (Exercise exercise : exercises) {
+//                query.setString(1, currentWorkout.getName());
+//                query.setString(2, exercise.getName());
+//                query.setInt(3, exercise.getNumberOfSets());
+//                query.setString(4, exercise.getNotes());
+//                query.executeUpdate();
+//            }
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+
+    public void addRepTargetsToExercises(List<RepTarget> repTargets, List<Exercise> exercises) {
+        try {
+            PreparedStatement query = getQuery(INSERT_REP_TARGET);
             for (Exercise exercise : exercises) {
-                query.setString(1, currentWorkout.getName());
-                query.setString(2, exercise.getName());
-                query.setInt(3, exercise.getNumberOfSets());
-                query.setString(4, exercise.getNotes());
+                query.setString(1, exercise.getName());
+                query.setString(2, String.valueOf(repTargets));
                 query.executeUpdate();
             }
         } catch (SQLException e) {
@@ -76,5 +107,29 @@ public class WorkoutMapper {
             throw new RuntimeException(e);
         }
         return workouts;
+    }
+
+    public List<String> giveAllExercisesFromWorkout(Workout workout) {
+        List<String> exercises = new ArrayList<>();
+        try {
+            for (Exercise exercise : workout.getExercises()) {
+                PreparedStatement query = getQuery(GIVE_ALL_EXERCISES_FROM_WORKOUT);
+                query.setString(1, workout.getName());
+                try (ResultSet rs = query.executeQuery()) {
+                    while (rs.next()) {
+                        exercises.add(rs.getString("name"));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return exercises;
+    }
+
+    // Private helper methods
+    private PreparedStatement getQuery(String statement) throws SQLException {
+        Connection connection = DriverManager.getConnection(persistence.Connection.JDBC_URL);
+        return connection.prepareStatement(statement);
     }
 }

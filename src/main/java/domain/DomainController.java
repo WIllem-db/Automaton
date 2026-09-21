@@ -18,7 +18,11 @@ public class DomainController {
 
     public void addExerciseToWorkout(String name, int numberOfSets, String notes) {
         currentWorkout.addExercise(name, numberOfSets, notes);
-        workoutRepository.addExercisesToWorkout(currentWorkout.getExercises(), currentWorkout);
+        workoutRepository.addExerciseToWorkout(name, numberOfSets, notes, currentWorkout);
+    }
+
+    public void addRepTargetsToExercises(List<RepTarget> repTargets) {
+        workoutRepository.addRepTargetsToExercises(repTargets, currentWorkout.getExercises());
     }
 
     public void deleteWorkout(String name) {
@@ -27,5 +31,9 @@ public class DomainController {
 
     public List<String> giveAllWorkouts() {
         return workoutRepository.giveAllWorkouts();
+    }
+
+    public List<String> giveAllExercisesFromWorkout() {
+        return workoutRepository.giveAllExercisesFromWorkout(currentWorkout);
     }
 }

@@ -33,7 +33,6 @@ public class WorkoutProgramApplication {
                         System.out.print(e.getMessage());
                     }
                 }
-                case 3 -> System.exit(0);
             }
         } while (choice != 3);
     }

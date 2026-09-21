@@ -1,9 +1,9 @@
 package cui;
 
 import domain.DomainController;
+import domain.RepTarget;
 
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.util.*;
 
 public class CreateNewWorkout extends BaseApplication {
     public CreateNewWorkout(DomainController dc, Scanner scanner) {
@@ -13,6 +13,7 @@ public class CreateNewWorkout extends BaseApplication {
     public void start() {
         createWorkout();
         addExercisesToWorkout();
+        addRepTargetsToExercises();
     }
 
     private void createWorkout() {
@@ -56,6 +57,16 @@ public class CreateNewWorkout extends BaseApplication {
                 System.out.print("You need to enter the correct datatype!");
             }
         }
+    }
 
+    private void addRepTargetsToExercises() {
+        System.out.printf(
+                "Quick guide on how to setup rep targets!%n" +
+                        "Fixed rep target example -> 12%n" +
+                        "Rest pause rep target example -> 15, 8, 5%n"
+        );
+        for (String s : dc.giveAllExercisesFromWorkout()) {
+            System.out.println(s);
+        }
     }
 }

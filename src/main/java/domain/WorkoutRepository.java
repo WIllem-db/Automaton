@@ -22,8 +22,8 @@ public class WorkoutRepository {
         workoutMapper.addWorkout(workout);
     }
 
-    public void addExercisesToWorkout(List<Exercise> exercises, Workout currentWorkout) {
-        workoutMapper.addExercisesToWorkout(exercises, currentWorkout);
+    public void addExerciseToWorkout(String name, int numberOfSets, String notes, Workout workout) {
+        workoutMapper.addExerciseToWorkout(name, numberOfSets, notes, workout);
     }
 
     public void deleteWorkout(String name) {
@@ -37,6 +37,14 @@ public class WorkoutRepository {
 
     public List<String> giveAllWorkouts() {
          return workoutMapper.giveAllWorkouts();
+    }
+
+    public void addRepTargetsToExercises(List<RepTarget> repTargets, List<Exercise> exercises) {
+        workoutMapper.addRepTargetsToExercises(repTargets, exercises);
+    }
+
+    public List<String> giveAllExercisesFromWorkout(Workout workout) {
+        return workoutMapper.giveAllExercisesFromWorkout(workout);
     }
 
     // Private helper methods
