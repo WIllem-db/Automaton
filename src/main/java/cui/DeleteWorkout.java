@@ -2,6 +2,7 @@ package cui;
 
 import domain.DomainController;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class DeleteWorkout extends BaseApplication {
@@ -14,8 +15,19 @@ public class DeleteWorkout extends BaseApplication {
     }
 
     private void deleteWorkout() {
-        System.out.print(dc.giveAllWorkouts());
-        String name = scanner.nextLine();
-        dc.deleteWorkout(name);
+        boolean valid = false;
+        while (!valid) {
+            try {
+                for (String name : dc.giveAllWorkouts()) {
+                    System.out.println(name);
+                }
+                System.out.print("Pick workout to delete: ");
+                String chosenWorkout = scanner.nextLine();
+                dc.deleteWorkout(chosenWorkout);
+                valid = true;
+            } catch (IllegalArgumentException e) {
+                System.out.print(e.getMessage());
+            }
+        }
     }
 }

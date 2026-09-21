@@ -32,7 +32,7 @@ public class WorkoutMapper {
             query.setString(1, name);
             try (ResultSet rs = query.executeQuery()) {
                 if (rs.next()) {
-                    return new Workout(rs.getString(name));
+                    return new Workout(rs.getString("name"));
                 }
                 return null;
             }
@@ -64,17 +64,17 @@ public class WorkoutMapper {
         }
     }
 
-    public String giveAllWorkouts() {
+    public List<String> giveAllWorkouts() {
         List<String> workouts = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(persistence.Connection.JDBC_URL); PreparedStatement query = connection.prepareStatement(GIVE_ALL_WORKOUTS)) {
             try (ResultSet rs = query.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getString("name");
+                while (rs.next()) {
+                    workouts.add(rs.getString("name"));
                 }
-                return null;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return workouts;
     }
 }

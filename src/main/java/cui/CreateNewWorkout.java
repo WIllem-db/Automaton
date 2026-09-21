@@ -43,7 +43,7 @@ public class CreateNewWorkout extends BaseApplication {
                 dc.addExerciseToWorkout(name, numberOfSets, notes);
                 boolean validAnswer = false;
                 while (!validAnswer) {
-                    System.out.print("Add another exercise? (y/n)");
+                    System.out.print("Add another exercise? (y/n): ");
                     String answer = scanner.nextLine();
                     if (answer.equals("y") || answer.equals("n")) {
                         validAnswer = true;

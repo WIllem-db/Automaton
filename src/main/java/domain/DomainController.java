@@ -1,5 +1,7 @@
 package domain;
 
+import java.util.List;
+
 public class DomainController {
     private final WorkoutRepository workoutRepository;
     private Workout currentWorkout;
@@ -23,7 +25,7 @@ public class DomainController {
         workoutRepository.deleteWorkout(name);
     }
 
-    public String giveAllWorkouts() {
+    public List<String> giveAllWorkouts() {
         return workoutRepository.giveAllWorkouts();
     }
 }

@@ -35,7 +35,7 @@ public class WorkoutRepository {
         workoutMapper.deleteWorkout(name);
     }
 
-    public String giveAllWorkouts() {
+    public List<String> giveAllWorkouts() {
          return workoutMapper.giveAllWorkouts();
     }
 
