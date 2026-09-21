@@ -1,6 +1,8 @@
 package cui;
 
 import domain.DomainController;
+import exceptions.NoElementsFoundInDatabase;
+
 import java.util.Scanner;
 
 public class WorkoutProgramApplication {
@@ -25,8 +27,13 @@ public class WorkoutProgramApplication {
                 }
                 case 2 -> {
                     deleteWorkout = new DeleteWorkout(dc, scanner);
-                    deleteWorkout.start();
+                    try {
+                        deleteWorkout.start();
+                    } catch (NoElementsFoundInDatabase e) {
+                        System.out.print(e.getMessage());
+                    }
                 }
+                case 3 -> System.exit(0);
             }
         } while (choice != 3);
     }

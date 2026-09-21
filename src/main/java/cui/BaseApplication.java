@@ -2,6 +2,7 @@ package cui;
 
 import domain.DomainController;
 
+import java.util.List;
 import java.util.Scanner;
 
 public abstract class BaseApplication {
@@ -14,4 +15,15 @@ public abstract class BaseApplication {
     }
 
     public abstract void start();
+
+    // String showcase/return methods
+
+    public String giveWorkouts() {
+        List<String> workouts = dc.giveAllWorkouts();
+        String workoutsString = "";
+        for (int i = 0; i < workouts.size(); i++) {
+            workoutsString += String.format("%d. %s", i + 1, workouts.get(i));
+        }
+        return workoutsString;
+    }
 }

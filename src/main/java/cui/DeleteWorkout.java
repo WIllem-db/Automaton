@@ -1,6 +1,7 @@
 package cui;
 
 import domain.DomainController;
+import exceptions.NoElementsFoundInDatabase;
 
 import java.util.List;
 import java.util.Scanner;
@@ -18,8 +19,9 @@ public class DeleteWorkout extends BaseApplication {
         boolean valid = false;
         while (!valid) {
             try {
-                for (String name : dc.giveAllWorkouts()) {
-                    System.out.println(name);
+                String workouts = giveWorkouts();
+                if (workouts.isEmpty()) {
+                    throw new NoElementsFoundInDatabase("No workouts where found inside the database!");
                 }
                 System.out.print("Pick workout to delete: ");
                 String chosenWorkout = scanner.nextLine();
